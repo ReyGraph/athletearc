@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G y M</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="container">
+        <div id="sidebar">
+            <button id="menu-memo" class="menu-button">Memo</button>
+            <button id="menu-todo" class="menu-button">To-Do List</button>
+            <button id="menu-gym" class="menu-button">Gym Plan</button>
+        </div>
+        <div id="main-content">
+            <iframe id="content" src="./components/memo.html"></iframe>
+        </div>
+        <div id="clock-section">
+            <div id="clock" class="neon-box">
+                <span id="time"></span>
+            </div>
+            <button id="toggle-clock" class="arrow-button">&rarr;</button>
+        </div>
+    </div>
+    <script src="renderer.js"></script>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = `${hours}:${minutes} |`;
+        }
+
+        function showContent(url) {
+            document.getElementById('content').src = url;
+            document.getElementById('sidebar').style.display = 'none';
+            document.getElementById('main-content').style.width = '100%';
+            document.getElementById('clock-section').style.display = 'block';
+        }
+
+        function toggleClock() {
+            const clockSection = document.getElementById('clock-section');
+            const toggleButton = document.getElementById('toggle-clock');
+            if (clockSection.style.right === '0px') {
+                clockSection.style.right = '-200px';
+                toggleButton.innerHTML = '&larr;';
+            } else {
+                clockSection.style.right = '0px';
+                toggleButton.innerHTML = '&rarr;';
+            }
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        document.getElementById('menu-memo').addEventListener('click', () => showContent('./components/memo.html'));
+        document.getElementById('menu-todo').addEventListener('click', () => showContent('./components/todo.html'));
+        document.getElementById('menu-gym').addEventListener('click', () => showContent('./components/gym.html'));
+        document.getElementById('toggle-clock').addEventListener('click', toggleClock);
+    </script>
+</body>
+</html>

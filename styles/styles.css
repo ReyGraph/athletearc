@@ -1,0 +1,143 @@
+body {
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background: #1b1b2f;
+    color: #ecf0f1;
+}
+
+#container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+#sidebar {
+    width: 200px;
+    background: #162447;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: width 0.3s;
+}
+
+.menu-button {
+    background: transparent;
+    border: 2px solid #e43f5a;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #e43f5a;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: background 0.3s, color 0.3s, transform 0.3s;
+    width: 100%;
+    text-align: center;
+}
+
+.menu-button:hover {
+    background: #e43f5a;
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+#main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: calc(100% - 200px);
+    transition: width 0.3s;
+}
+
+#clock-section {
+    position: fixed;
+    right: -200px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: right 0.3s;
+    z-index: 1000;
+}
+
+#clock {
+    margin-bottom: 20px;
+}
+
+.neon-box {
+    border: 4px solid #e43f5a;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px #e43f5a, 0 0 30px #e43f5a, 0 0 40px #e43f5a;
+}
+
+#time {
+    font-size: 3em;
+}
+
+#content {
+    flex-grow: 1;
+    width: 100%;
+    border: none;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    height: 100%;
+}
+
+.arrow-button {
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e43f5a;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 0 20px #e43f5a, 0 0 30px #e43f5a, 0 0 40px #e43f5a;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.arrow-button:hover {
+    transform: translateY(-50%) scale(1.1);
+    background: #d63447;
+}
+
+@media (max-width: 768px) {
+    #container {
+        flex-direction: column;
+    }
+
+    #sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+    }
+
+    .menu-button {
+        margin-bottom: 0;
+        padding: 10px 20px;
+    }
+
+    #main-content {
+        padding: 10px;
+        width: 100%;
+    }
+
+    #clock {
+        margin-bottom: 10px;
+    }
+
+    #time {
+        font-size: 2em;
+    }
+}

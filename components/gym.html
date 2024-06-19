@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gym Plan</title>
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        #gym-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #gym-list li {
+            background: #34495e;
+            color: #ecf0f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: calc(100% - 110px);
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            border: 2px solid #34495e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            border: none;
+            background: #34495e;
+            color: #ecf0f1;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background: #2c3e50;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Gym Plan</h1>
+    <h2>Workout Routines</h2>
+    <ul id="gym-list"></ul>
+    <input type="text" id="new-gym-item" placeholder="Add a new gym item...">
+    <button id="add-gym-item">Add</button>
+    <script>
+        document.getElementById('add-gym-item').addEventListener('click', () => {
+            const newItem = document.getElementById('new-gym-item').value;
+            if (newItem) {
+                const li = document.createElement('li');
+                li.textContent = newItem;
+                document.getElementById('gym-list').appendChild(li);
+                document.getElementById('new-gym-item').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
