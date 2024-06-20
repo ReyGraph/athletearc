@@ -52,12 +52,99 @@
             background: #d63447;
             transform: translateY(-3px);
         }
+
+        .save-options {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #162447;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+        }
+
+        .save-options label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .save-options input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #34495e;
+            border-radius: 5px;
+            background: #1b1b2f;
+            color: #ecf0f1;
+        }
+
+        .save-options button {
+            margin-top: 10px;
+            background: #e43f5a;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .save-options button:hover {
+            background: #d63447;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
-    <textarea placeholder="Write your memo here..."></textarea>
+    <textarea id="memo-content" placeholder="Write your memo here..."></textarea>
     <div class="button-bar">
-        <button>Save</button>
+        <button id="save-button">Save</button>
     </div>
+
+    <div class="save-options" id="save-options">
+        <label for="memo-color">Memo Color:</label>
+        <input type="color" id="memo-color" value="#e43f5a">
+        <label for="memo-name">Memo Name:</label>
+        <input type="text" id="memo-name">
+        <button id="save-confirm">Save Memo</button>
+    </div>
+
+    <script>
+        document.getElementById('save-button').addEventListener('click', function() {
+            document.getElementById('save-options').style.display = 'block';
+        });
+
+        document.getElementById('save-confirm').addEventListener('click', function() {
+            const memoContent = document.getElementById('memo-content').value;
+            const memoColor = document.getElementById('memo-color').value;
+            const memoName = document.getElementById('memo-name').value;
+
+            if (!memoContent.trim()) {
+                alert('Memo content cannot be empty!');
+                return;
+            }
+
+            const memo = {
+                content: memoContent,
+                color: memoColor,
+                name: memoName || 'Untitled Memo'
+            };
+
+            // Save memo to local storage (example)
+            let savedMemos = JSON.parse(localStorage.getItem('savedMemos')) || [];
+            savedMemos.push(memo);
+            localStorage.setItem('savedMemos', JSON.stringify(savedMemos));
+
+            // Reset the form and hide save options
+            document.getElementById('memo-content').value = '';
+            document.getElementById('save-options').style.display = 'none';
+
+            // You could implement saving logic to store the memo data
+            // For simplicity in this example, we just save to local storage
+        });
+    </script>
 </body>
 </html>
