@@ -19,7 +19,6 @@
 
         <div id="main-content">
             <div id="clock-section">
-                <div id="clock-overlay"></div>
                 <div id="clock" class="neon-box">
                     <div id="time">00:00</div>
                 </div>
@@ -103,15 +102,12 @@
 
         function toggleClock() {
             const clockSection = document.getElementById('clock-section');
-            const overlay = document.getElementById('clock-overlay');
             const arrowButton = document.querySelector('.arrow-button');
             if (clockSection.style.right === '0px') {
                 clockSection.style.right = '-200px';
-                overlay.style.display = 'none';
                 arrowButton.innerHTML = '&#10095;';
             } else {
                 clockSection.style.right = '0px';
-                overlay.style.display = 'block';
                 arrowButton.innerHTML = '&#10094;';
             }
         }
@@ -130,7 +126,7 @@
             }
 
             hours = String(hours).padStart(2, '0');
-            document.getElementById('time').textContent = `${hours}:${minutes}${ampm}`;
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
         }
         setInterval(updateTime, 1000);
 
