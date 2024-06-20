@@ -90,7 +90,38 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Modal for viewing/editing memo -->
+        <div id="memo-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal()">&times;</span>
+                <h2 id="modal-memo-title"></h2>
+                <div id="modal-memo-content"></div>
+                <button id="edit-memo-button">Edit</button>
+            </div>
+        </div>
+
+        <!-- Modal for editing memo -->
+        <div id="edit-memo-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeEditModal()">&times;</span>
+                <h2>Edit Memo</h2>
+                <div id="edit-memo-editor-toolbar">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+                    <button class="ql-list" value="bullet"></button>
+                    <button class="ql-list" value="ordered"></button>
+                    <button class="ql-color"></button>
+                    <button class="ql-background"></button>
+                    <button class="ql-header" value="1"></button>
+                    <button class="ql-header" value="2"></button>
+                </div>
+                <div id="edit-memo-editor"></div>
+                <button id="save-edit-button">Save Changes</button>
+            </div>
+        </div>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
@@ -126,7 +157,7 @@
             }
 
             hours = String(hours).padStart(2, '0');
-            document.getElementById('time').textContent = `${hours}:${minutes}`;
+            document.getElementById('time').textContent = `${hours}:${minutes}${ampm}`;
         }
         setInterval(updateTime, 1000);
 
@@ -143,8 +174,11 @@
             const savedMemos = document.getElementById('saved-memos');
             const memoElement = document.createElement('div');
             memoElement.style.backgroundColor = memoColor;
-            memoElement.className = 'neon-box';
-            memoElement.innerHTML = `<h3>${memoName}</h3><div>${memoContent}</div>`;
+            memoElement.className = 'neon-box memo-item';
+            memoElement.innerHTML = `<h3 class="memo-title">${memoName}</h3><p class="memo-description">${memoContent.substring(0, 100)}...</p>`;
+            memoElement.addEventListener('click', function() {
+                openMemo(memoName, memoContent);
+            });
             savedMemos.appendChild(memoElement);
 
             editor.innerHTML = '';
@@ -161,14 +195,44 @@
             document.getElementById('sidebar').style.background = menuColor;
         });
 
-        // Initialize the clock
-        updateTime();
+        function openMemo(title, content) {
+            document.getElementById('modal-memo-title').textContent = title;
+            document.getElementById('modal-memo-content').innerHTML = content;
+            document.getElementById('memo-modal').style.display = 'block';
+        }
 
-        // Initialize Quill editor
+        document.getElementById('edit-memo-button').addEventListener('click', function() {
+            const content = document.getElementById('modal-memo-content').innerHTML;
+            document.getElementById('edit-memo-editor').children[0].innerHTML = content;
+            document.getElementById('memo-modal').style.display = 'none';
+            document.getElementById('edit-memo-modal').style.display = 'block';
+        });
+
+        document.getElementById('save-edit-button').addEventListener('click', function() {
+            const editedContent = document.getElementById('edit-memo-editor').children[0].innerHTML;
+            document.getElementById('modal-memo-content').innerHTML = editedContent;
+            document.getElementById('edit-memo-modal').style.display = 'none';
+        });
+
+        function closeModal() {
+            document.getElementById('memo-modal').style.display = 'none';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-memo-modal').style.display = 'none';
+        }
+
         const quill = new Quill('#editor', {
             theme: 'snow',
             modules: {
                 toolbar: '#editor-toolbar'
+            }
+        });
+
+        const editQuill = new Quill('#edit-memo-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: '#edit-memo-editor-toolbar'
             }
         });
     </script>
