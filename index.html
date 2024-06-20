@@ -2,63 +2,179 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>G y M</title>
-    <link rel="stylesheet" href="styles/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="./styles/styles.css" rel="stylesheet">
 </head>
 <body>
     <div id="container">
         <div id="sidebar">
-            <button id="menu-memo" class="menu-button">Memo</button>
-            <button id="menu-todo" class="menu-button">To-Do List</button>
-            <button id="menu-gym" class="menu-button">Gym Plan</button>
+            <button class="menu-button" onclick="showSection('memo')">Memo</button>
+            <button class="menu-button" onclick="showSection('todo')">To-Do List</button>
+            <button class="menu-button" onclick="showSection('gym')">Gym Plan</button>
+            <button class="menu-button" onclick="showSection('saved')">Saved</button>
+            <button class="menu-button" onclick="showSection('settings')">Settings</button>
         </div>
+
         <div id="main-content">
-            <iframe id="content" src="./components/memo.html"></iframe>
-        </div>
-        <div id="clock-section">
-            <div id="clock" class="neon-box">
-                <span id="time"></span>
+            <div id="clock-section">
+                <div id="clock-overlay"></div>
+                <div id="clock" class="neon-box">
+                    <div id="time">00:00</div>
+                </div>
+                <button class="arrow-button" onclick="toggleClock()">&#10095;</button>
             </div>
-            <button id="toggle-clock" class="arrow-button">&rarr;</button>
+
+            <div id="content">
+                <div id="memo" class="section">
+                    <div id="editor-toolbar">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                        <button class="ql-list" value="bullet"></button>
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-color"></button>
+                        <button class="ql-background"></button>
+                        <button class="ql-header" value="1"></button>
+                        <button class="ql-header" value="2"></button>
+                    </div>
+                    <div id="editor" placeholder="Write your memo here..."></div>
+                    <div class="button-bar">
+                        <button id="save-button">Save</button>
+                    </div>
+                    <div class="save-options" id="save-options">
+                        <label for="memo-color">Memo Color:</label>
+                        <input type="color" id="memo-color" value="#e43f5a">
+                        <label for="memo-name">Memo Name:</label>
+                        <input type="text" id="memo-name">
+                        <button id="save-confirm">Save Memo</button>
+                    </div>
+                </div>
+
+                <div id="todo" class="section" style="display: none;">
+                    <h2>To-Do List</h2>
+                    <!-- To-Do list content goes here -->
+                </div>
+
+                <div id="gym" class="section" style="display: none;">
+                    <h2>Gym Plan</h2>
+                    <!-- Gym plan content goes here -->
+                </div>
+
+                <div id="saved" class="section" style="display: none;">
+                    <h2>Saved Memos</h2>
+                    <div id="saved-memos">
+                        <!-- Saved memos will be displayed here -->
+                    </div>
+                </div>
+
+                <div id="settings" class="section" style="display: none;">
+                    <h2>Settings</h2>
+                    <div class="settings-group">
+                        <label for="clock-format">Clock Format:</label>
+                        <select id="clock-format">
+                            <option value="24">24-hour</option>
+                            <option value="12">12-hour</option>
+                        </select>
+                    </div>
+                    <div class="settings-group">
+                        <label for="clock-color">Clock Color:</label>
+                        <input type="color" id="clock-color" value="#e43f5a">
+                    </div>
+                    <div class="settings-group">
+                        <label for="menu-color">Menu Color:</label>
+                        <input type="color" id="menu-color" value="#162447">
+                    </div>
+                    <button id="apply-settings">Apply Settings</button>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="renderer.js"></script>
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('time').textContent = `${hours}:${minutes} |`;
-        }
 
-        function showContent(url) {
-            document.getElementById('content').src = url;
-            document.getElementById('sidebar').style.display = 'none';
-            document.getElementById('main-content').style.width = '100%';
-            document.getElementById('clock-section').style.display = 'block';
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = section.id === sectionId ? 'block' : 'none';
+            });
         }
 
         function toggleClock() {
             const clockSection = document.getElementById('clock-section');
-            const toggleButton = document.getElementById('toggle-clock');
+            const overlay = document.getElementById('clock-overlay');
+            const arrowButton = document.querySelector('.arrow-button');
             if (clockSection.style.right === '0px') {
                 clockSection.style.right = '-200px';
-                toggleButton.innerHTML = '&larr;';
+                overlay.style.display = 'none';
+                arrowButton.innerHTML = '&#10095;';
             } else {
                 clockSection.style.right = '0px';
-                toggleButton.innerHTML = '&rarr;';
+                overlay.style.display = 'block';
+                arrowButton.innerHTML = '&#10094;';
             }
         }
 
-        setInterval(updateClock, 1000);
-        updateClock();
+        function updateTime() {
+            const now = new Date();
+            const format = document.getElementById('clock-format').value;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            let ampm = '';
 
-        document.getElementById('menu-memo').addEventListener('click', () => showContent('./components/memo.html'));
-        document.getElementById('menu-todo').addEventListener('click', () => showContent('./components/todo.html'));
-        document.getElementById('menu-gym').addEventListener('click', () => showContent('./components/gym.html'));
-        document.getElementById('toggle-clock').addEventListener('click', toggleClock);
+            if (format === '12') {
+                ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+            }
+
+            hours = String(hours).padStart(2, '0');
+            document.getElementById('time').textContent = `${hours}:${minutes}${ampm}`;
+        }
+        setInterval(updateTime, 1000);
+
+        document.getElementById('save-button').addEventListener('click', function() {
+            document.getElementById('save-options').style.display = 'block';
+        });
+
+        document.getElementById('save-confirm').addEventListener('click', function() {
+            const editor = document.getElementById('editor').children[0];
+            const memoContent = editor.innerHTML;
+            const memoColor = document.getElementById('memo-color').value;
+            const memoName = document.getElementById('memo-name').value;
+
+            const savedMemos = document.getElementById('saved-memos');
+            const memoElement = document.createElement('div');
+            memoElement.style.backgroundColor = memoColor;
+            memoElement.className = 'neon-box';
+            memoElement.innerHTML = `<h3>${memoName}</h3><div>${memoContent}</div>`;
+            savedMemos.appendChild(memoElement);
+
+            editor.innerHTML = '';
+            document.getElementById('save-options').style.display = 'none';
+        });
+
+        document.getElementById('apply-settings').addEventListener('click', function() {
+            const clockColor = document.getElementById('clock-color').value;
+            const menuColor = document.getElementById('menu-color').value;
+
+            document.getElementById('clock').style.borderColor = clockColor;
+            document.getElementById('clock').style.boxShadow = `0 0 20px ${clockColor}, 0 0 30px ${clockColor}, 0 0 40px ${clockColor}`;
+
+            document.getElementById('sidebar').style.background = menuColor;
+        });
+
+        // Initialize the clock
+        updateTime();
+
+        // Initialize Quill editor
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: '#editor-toolbar'
+            }
+        });
     </script>
 </body>
 </html>
