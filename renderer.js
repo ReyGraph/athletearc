@@ -1,13 +1,16 @@
 function navigateTo(page) {
-  document.getElementById('content').src = `./components/${page}.html`;
-}
-
-function addMenuClickListener(menuId, page) {
-  document.getElementById(menuId).addEventListener('click', () => {
-    navigateTo(page);
+    document.getElementById('content').src = `./components/${page}.html`;
+  }
+  
+  document.getElementById('menu-memo').addEventListener('click', () => {
+    navigateTo('memo');
   });
-}
-
-addMenuClickListener('menu-memo', 'memo');
-addMenuClickListener('menu-todo', 'todo');
-addMenuClickListener('menu-gym', 'gym');
+  
+  document.getElementById('menu-todo').addEventListener('click', () => {
+    navigateTo('todo');
+  });
+  
+  document.getElementById('menu-gym').addEventListener('click', () => {
+    navigateTo('gym');
+  });
+  
