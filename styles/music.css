@@ -1,16 +1,24 @@
 body {
     font-family: 'Orbitron', sans-serif;
-    background-color: #0f0f0f;
+    background-color: #121212;
     color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .neon-box {
-    border: 2px solid #00f9ff;
+    border: 2px solid #0f0;
     border-radius: 10px;
-    box-shadow: 0 0 10px #00f9ff;
+    box-shadow: 0 0 20px #0f0;
     padding: 20px;
     margin: 20px 0;
     text-align: center;
+    background-color: #1a1a1a;
+    width: 300px;
 }
 
 #music-player {
@@ -27,51 +35,68 @@ body {
 }
 
 #controls button {
-    background-color: #00f9ff;
+    background-color: #0f0;
     border: none;
     padding: 10px 20px;
     color: #000;
     font-weight: bold;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #controls button:hover {
-    background-color: #00c7d1;
+    background-color: #0c0;
+    box-shadow: 0 0 10px #0f0;
 }
 
 #track-name {
     margin-top: 10px;
     font-size: 1.2em;
     font-weight: bold;
+    color: #0f0;
 }
 
 #select-music-button {
-    background-color: #00f9ff;
+    background-color: #0f0;
     border: none;
     padding: 10px 20px;
     color: #000;
     font-weight: bold;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     margin: 20px 0;
 }
 
 #select-music-button:hover {
-    background-color: #00c7d1;
+    background-color: #0c0;
+    box-shadow: 0 0 10px #0f0;
 }
 
 #music-slider {
     -webkit-appearance: none;
     width: 100%;
     height: 10px;
-    background: linear-gradient(90deg, #00f9ff, #0f0, #ff00ff);
+    background: linear-gradient(to right, #ff0000, #00ff00, #0000ff);
     outline: none;
     border-radius: 10px;
     margin-top: 10px;
     transition: background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#music-slider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 255, 0, 0.3);
+    filter: blur(10px);
+    transition: transform 0.3s ease;
 }
 
 #music-slider::-webkit-slider-thumb {
@@ -79,38 +104,39 @@ body {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #00f9ff;
+    background: #0f0;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 10px #00f9ff;
-    animation: pulse 1s infinite;
+    box-shadow: 0 0 20px #0f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: lightSaber 1.5s infinite linear;
 }
 
 #music-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #00f9ff;
+    background: #0f0;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 10px #00f9ff;
-    animation: pulse 1s infinite;
+    box-shadow: 0 0 20px #0f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: lightSaber 1.5s infinite linear;
 }
 
-@keyframes pulse {
+@keyframes lightSaber {
     0% {
-        box-shadow: 0 0 10px #00f9ff, 0 0 20px #00f9ff, 0 0 30px #00f9ff;
+        box-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
     }
     50% {
-        box-shadow: 0 0 5px #00f9ff, 0 0 10px #00f9ff, 0 0 15px #00f9ff;
+        box-shadow: 0 0 20px #0f0, 0 0 40px #0f0, 0 0 60px #0f0;
     }
     100% {
-        box-shadow: 0 0 10px #00f9ff, 0 0 20px #00f9ff, 0 0 30px #00f9ff;
+        box-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
     }
 }
 
 #music-slider::-webkit-slider-runnable-track {
-    background: linear-gradient(90deg, #00f9ff 0%, #0f0 50%, #ff00ff 100%);
+    background: linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
     height: 10px;
     border-radius: 10px;
-    transition: background 0.3s ease;
 }
