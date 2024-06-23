@@ -6,6 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="./styles/styles.css" rel="stylesheet">
+    <link href="./styles/music.css" rel="stylesheet">
 </head>
 <body>
     <div id="container">
@@ -15,6 +16,7 @@
             <button class="menu-button" onclick="showSection('gym')">Gym Plan</button>
             <button class="menu-button" onclick="showSection('saved')">Saved</button>
             <button class="menu-button" onclick="showSection('settings')">Settings</button>
+            <button class="menu-button" onclick="showSection('music')">Music Player</button>
         </div>
 
         <div id="main-content">
@@ -87,6 +89,24 @@
                         <input type="color" id="menu-color" value="#162447">
                     </div>
                     <button id="apply-settings">Apply Settings</button>
+                </div>
+
+                <div id="music" class="section" style="display: none;">
+                    <h2>Music Player</h2>
+                    <button id="select-music-button" onclick="document.getElementById('music-selector').click()">Select Music</button>
+                    <input type="file" id="music-selector" multiple accept="audio/*" style="display: none;">
+                    <div id="music-list"></div>
+                    <div id="music-player" class="neon-box">
+                        <audio id="audio-player" controls style="display: none;"></audio>
+                        <div id="controls">
+                            <button id="prev-button">Prev</button>
+                            <button id="play-pause-button">Play/Pause</button>
+                            <button id="next-button">Next</button>
+                            <button id="shuffle-button">Shuffle</button>
+                        </div>
+                        <input type="range" id="music-slider" min="0" max="100" value="0">
+                        <div id="track-name">Track Name</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -175,24 +195,21 @@
             const memoElement = document.createElement('div');
             memoElement.style.backgroundColor = memoColor;
             memoElement.className = 'neon-box memo-item';
-            memoElement.innerHTML = `<h3 class="memo-title">${memoName}</h3><p class="memo-description">${memoContent.substring(0, 100)}...</p>`;
-            memoElement.addEventListener('click', function() {
-                openMemo(memoName, memoContent);
-            });
+            memoElement.innerHTML = `<h3>${memoName}</h3>${memoContent}`;
+            memoElement.addEventListener('click', () => openMemo(memoName, memoContent));
             savedMemos.appendChild(memoElement);
 
-            editor.innerHTML = '';
             document.getElementById('save-options').style.display = 'none';
+            editor.innerHTML = '';
+            document.getElementById('memo-name').value = '';
         });
 
         document.getElementById('apply-settings').addEventListener('click', function() {
             const clockColor = document.getElementById('clock-color').value;
-            const menuColor = document.getElementById('menu-color').value;
-
-            document.getElementById('clock').style.borderColor = clockColor;
-            document.getElementById('clock').style.boxShadow = `0 0 20px ${clockColor}, 0 0 30px ${clockColor}, 0 0 40px ${clockColor}`;
-
-            document.getElementById('sidebar').style.background = menuColor;
+            document.getElementById('clock').style.backgroundColor = clockColor;
+            document.querySelectorAll('.menu-button').forEach(button => {
+                button.style.backgroundColor = document.getElementById('menu-color').value;
+            });
         });
 
         function openMemo(title, content) {
@@ -200,19 +217,6 @@
             document.getElementById('modal-memo-content').innerHTML = content;
             document.getElementById('memo-modal').style.display = 'block';
         }
-
-        document.getElementById('edit-memo-button').addEventListener('click', function() {
-            const content = document.getElementById('modal-memo-content').innerHTML;
-            document.getElementById('edit-memo-editor').children[0].innerHTML = content;
-            document.getElementById('memo-modal').style.display = 'none';
-            document.getElementById('edit-memo-modal').style.display = 'block';
-        });
-
-        document.getElementById('save-edit-button').addEventListener('click', function() {
-            const editedContent = document.getElementById('edit-memo-editor').children[0].innerHTML;
-            document.getElementById('modal-memo-content').innerHTML = editedContent;
-            document.getElementById('edit-memo-modal').style.display = 'none';
-        });
 
         function closeModal() {
             document.getElementById('memo-modal').style.display = 'none';
@@ -222,19 +226,23 @@
             document.getElementById('edit-memo-modal').style.display = 'none';
         }
 
-        const quill = new Quill('#editor', {
-            theme: 'snow',
-            modules: {
-                toolbar: '#editor-toolbar'
-            }
-        });
+        function initializeQuill() {
+            new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: '#editor-toolbar'
+                }
+            });
 
-        const editQuill = new Quill('#edit-memo-editor', {
-            theme: 'snow',
-            modules: {
-                toolbar: '#edit-memo-editor-toolbar'
-            }
-        });
+            new Quill('#edit-memo-editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: '#edit-memo-editor-toolbar'
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', initializeQuill);
     </script>
+    <script src="./renderer.js"></script>
 </body>
 </html>
