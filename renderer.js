@@ -31,7 +31,7 @@ function playTrack(index) {
         audioPlayer.play();
         document.getElementById('track-name').textContent = track.name;
         currentTrackIndex = index;
-        document.getElementById('play-pause-button').textContent = 'Pause';
+        document.getElementById('play-pause-button').textContent = '⏸';
     }
 }
 
@@ -40,10 +40,10 @@ document.getElementById('music-selector').addEventListener('change', handleFileS
 document.getElementById('play-pause-button').addEventListener('click', () => {
     if (audioPlayer.paused) {
         audioPlayer.play();
-        document.getElementById('play-pause-button').textContent = 'Pause';
+        document.getElementById('play-pause-button').textContent = '⏸';
     } else {
         audioPlayer.pause();
-        document.getElementById('play-pause-button').textContent = 'Play';
+        document.getElementById('play-pause-button').textContent = '▶️';
     }
 });
 
@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', loadMusicList);
 audioPlayer.addEventListener('timeupdate', () => {
     const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
     document.getElementById('music-slider').value = progress;
+    document.getElementById('slider-animation').style.width = `${progress}%`;
 });
 
 document.getElementById('music-slider').addEventListener('input', (event) => {
