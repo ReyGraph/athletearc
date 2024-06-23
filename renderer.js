@@ -7,8 +7,21 @@ let tracks = [];
 function handleFileSelect(event) {
     tracks = Array.from(event.target.files);
     if (tracks.length > 0) {
+        updateTrackList();
         playTrack(0);
     }
+}
+
+function updateTrackList() {
+    const musicList = document.getElementById('music-list');
+    musicList.innerHTML = '';
+    tracks.forEach((track, index) => {
+        const trackElement = document.createElement('div');
+        trackElement.className = 'track-item';
+        trackElement.textContent = track.name;
+        trackElement.addEventListener('click', () => playTrack(index));
+        musicList.appendChild(trackElement);
+    });
 }
 
 function playTrack(index) {
@@ -60,6 +73,7 @@ async function saveMusicList() {
 async function loadMusicList() {
     tracks = await ipcRenderer.invoke('load-music-list');
     if (tracks.length > 0) {
+        updateTrackList();
         playTrack(0);
     }
 }
