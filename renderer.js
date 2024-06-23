@@ -66,3 +66,13 @@ async function loadMusicList() {
 
 window.addEventListener('beforeunload', saveMusicList);
 document.addEventListener('DOMContentLoaded', loadMusicList);
+
+audioPlayer.addEventListener('timeupdate', () => {
+    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    document.getElementById('music-slider').value = progress;
+});
+
+document.getElementById('music-slider').addEventListener('input', (event) => {
+    const newTime = (event.target.value / 100) * audioPlayer.duration;
+    audioPlayer.currentTime = newTime;
+});
